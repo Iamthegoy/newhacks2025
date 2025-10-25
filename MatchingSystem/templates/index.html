@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TeamBloom - Find Your Match</title>
+</head>
+<body>
+  <h1>Find Teammates</h1>
+
+  <label>Favorite Subject:</label>
+  <input id="subject" placeholder="e.g. AI"><br>
+
+  <label>Hobby:</label>
+  <input id="hobby" placeholder="e.g. Music"><br>
+
+  <button id="searchBtn">Search</button>
+
+  <div id="results"></div>
+
+  <!-- Link JS file -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
