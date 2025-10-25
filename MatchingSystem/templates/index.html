@@ -6,6 +6,33 @@
 <body>
   <h1>Find Your Match</h1>
 
+    <label>Age Range:</label>
+  <select id="ageRange">
+    <option value="">Any</option>
+    <option value="18-22">18-22</option>
+    <option value="23-29">23-29</option>
+    <option value="30-39">30-39</option>
+    <option value="40-49">40-49</option>
+    <option value="50-59">50-59</option>
+    <option value="60-69">60-69</option>
+    <option value="70-79">70-79</option>
+    <option value="80-89">80-89</option>
+    <option value="90-99">90-99</option>
+  </select><br>
+
+  <label>Nationality:</label>
+  <input id="nationality" placeholder="e.g. Japan"><br>
+
+   <label>Gender:</label>
+  <select id="gender">
+    <option value="">Any</option>
+    <option value="female">Female</option>
+    <option value="male">Male</option>
+  </select><br>
+
+  <label>Hobby:</label>
+  <input id="hobby" placeholder="e.g. Music"><br>
+
   <label>Favorite Subject:</label>
   <input id="subject" placeholder="e.g. AI"><br>
 
@@ -17,7 +44,7 @@
   <div id="results"></div>
 
   <br>
-  <a href="/room"><button>Go to Study Room 🌱</button></a>
+  <a href="room/<username>"><button>Go to Study Room 🌱</button></a>
 
   <!-- Link JS file -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>

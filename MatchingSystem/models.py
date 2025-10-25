@@ -8,7 +8,6 @@ class UserProfile:
     nationality: str
     gender:str
     favorite_subjects: List[str]
-    hobby1: List[str]
-    hobby2: str
+    hobbies: List[str]
     bio: str
 
