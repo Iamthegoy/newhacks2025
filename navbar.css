@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Baloo 2", sans-serif;
+}
+
+nav {
+    height: 100px;
+    background: #ffff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem calc((100vw - 1300px)/2); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
+}
+
+.navbar{
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.headers {
+    font-size: 18px;
+    color: #6CB2AC
+}
+
+nav a {
+    text-decoration: none;
+    color: #557c83;
+    padding:0 1.5rem;
+}
+nav a:hover{
+    color:#9DD0CC;
+}
+
+.login{
+    padding: 0rem calc((100vw - 1300px)/2);
+    position:fixed;
+    margin-left: 68rem;
+    margin-top: 0.2rem;
+    float: right;
+    justify-content: flex-end;
+    z-index: 101; 
+}
+
+.login-btn{
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    background: #FFCABD;
+    cursor: pointer;
+    border-radius: 60px;
+}
+
+.login-btn:hover {
+    background: #FFDAD0;
+}
+
+.btn-link, .btn-link:hover {
+    text-decoration: none;
+    color: #6CB2AC;
+    font-size: 22px
+}
