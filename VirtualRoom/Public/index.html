@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Friend Hangout Room</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js" defer></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #username {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 5px;
+        background: rgba(255,255,255,0.7);
+        border-radius: 4px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="username"></div>
+
+    <a-scene>
+      <!-- The local player's camera -->
+      <a-entity id="cameraRig" position="0 1.6 0">
+        <a-camera look-controls wasd-controls></a-camera>
+      </a-entity>
+
+      <!-- Ground and sky -->
+      <a-plane rotation="-90 0 0" width="30" height="30" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+
+      <!-- A simple landmark -->
+      <a-box position="0 1 -3" color="#4CC3D9"></a-box>
+      <a-sphere position="2 1 -5" radius="1" color="#EF2D5E"></a-sphere>
+    </a-scene>
+  </body>
+</html>
