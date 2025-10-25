@@ -4,11 +4,11 @@ from typing import List
 @dataclass
 class UserProfile:
     name: str
-    major: str
-    year: int
-    identity: str
+    age: int
+    nationality: str
+    gender:str
     favorite_subjects: List[str]
-    hobbies: List[str]
-    personality_type: str
+    hobby1: List[str]
+    hobby2: str
     bio: str
 
