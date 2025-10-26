@@ -36,7 +36,7 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: #557c83;
+    color: #6CB2AC;
     padding:0 1.5rem;
 }
 nav a:hover{
@@ -68,6 +68,4 @@ nav a:hover{
 
 .btn-link, .btn-link:hover {
     text-decoration: none;
-    color: #6CB2AC;
-    font-size: 22px
 }
