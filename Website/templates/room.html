@@ -118,6 +118,21 @@
         feedback.innerText = '❌ Not quite! Try again!';
       }
     }
+
+    async function addWater(points) {
+      waterPoints += points;
+      document.getElementById('growth-status').innerText = "Water Points: " + waterPoints;
+      updatePlant();
+      animatePlant();
+
+  // ✅ Send update to backend
+      await fetch('/update_progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: "{{ username }}", points })
+      });
+    }
+
   </script>
 
 </body>
