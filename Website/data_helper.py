@@ -30,6 +30,7 @@ def add_user(data, username, password, profile: UserProfile):
     })
 
 
+<<<<<<< Updated upstream
 def get_user_profile(data, username):
     """Retrieve a user's profile by username."""
     for user in data:
@@ -49,12 +50,21 @@ data = get_data()
 from data import users
 for user in users:
     add_user(data, user.name.lower(), "password123", UserProfile(
+=======
+data = get_data()
+from data import users
+for user in users:
+    add_user(data, user.name.lower(), user.name, "password123", UserProfile(
+>>>>>>> Stashed changes
         user.name, user.age, user.nationality, user.gender, user.favorite_subjects, user.hobbies, user.bio,
         water_points=0
     ))
     
 save_data(data)
+<<<<<<< Updated upstream
 """
+=======
+>>>>>>> Stashed changes
 
 
 
