@@ -4,63 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='connect.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
   <title>FriendLink</title>
 </head>
 <body>
   <nav>
+    <div class="logo">
+        <a href="/"><img src="static/images/friendlink_logo.png" alt="logo" height="135"></a>
+    </div>
     <div class="navbar">
         <a href="/" class="headers">Home</a>
         <a href="/connect" class="headers">Connect</a>
         <a href="/virtualrooms" class="headers">Virtual Rooms</a>
     </div>
     <div class="login">
-        <button type="submit" class="login-btn"><a class="btn-link" href="signin.html"><b>LOGIN</b></a></button>
+        <button type="submit" class="login-btn"><a class="btn-link" href="/signin"><b>LOGIN</b></a></button>
     </div> 
   </nav>
-  <h1>Find Your Match</h1>
+  
+  <div class="container">
+    <select id="ageRange">
+      <option value="">Age Range</option>
+      <option value="18-22">18-22</option>
+      <option value="23-29">23-29</option>
+      <option value="30-39">30-39</option>
+      <option value="40-49">40-49</option>
+      <option value="50-59">50-59</option>
+      <option value="60-69">60-69</option>
+      <option value="70-79">70-79</option>
+      <option value="80-89">80-89</option>
+      <option value="90-99">90-99</option>
+    </select><br>
 
-    <label>Age Range:</label>
-  <select id="ageRange">
-    <option value="">Any</option>
-    <option value="18-22">18-22</option>
-    <option value="23-29">23-29</option>
-    <option value="30-39">30-39</option>
-    <option value="40-49">40-49</option>
-    <option value="50-59">50-59</option>
-    <option value="60-69">60-69</option>
-    <option value="70-79">70-79</option>
-    <option value="80-89">80-89</option>
-    <option value="90-99">90-99</option>
-  </select><br>
+    <input id="nationality" placeholder="Nationality"><br>
 
-  <label>Nationality:</label>
-  <input id="nationality" placeholder="e.g. Japan"><br>
+    <select id="gender">
+      <option value="">Gender</option>
+      <option value="female">Female</option>
+      <option value="male">Male</option>
+    </select><br>
 
-   <label>Gender:</label>
-  <select id="gender">
-    <option value="">Any</option>
-    <option value="female">Female</option>
-    <option value="male">Male</option>
-  </select><br>
+    <input id="hobby" placeholder="Hobby 1"><br>
 
-  <label>Hobby:</label>
-  <input id="hobby" placeholder="e.g. Music"><br>
+    <input id="hobby" placeholder="Hobby 2"><br>
 
-  <label>Favorite Subject:</label>
-  <input id="subject" placeholder="e.g. AI"><br>
+    <input id="subject" placeholder="Favourite Subject"><br>
 
-  <label>Hobby:</label>
-  <input id="hobby" placeholder="e.g. Music"><br>
-
-  <button id="searchBtn">Search</button>
+    <button id="searchBtn">SEARCH</button>
+  </div>
 
   <div id="results"></div>
 
   <br>
-  <a href="room/<username>"><button>Go to Study Room 🌱</button></a>
 
-  <!-- Link JS file -->
+<!-- Link JS file -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>

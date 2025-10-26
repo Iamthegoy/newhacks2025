@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from data import users
 import sqlite3
+from models import UserProfile
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -8,6 +12,13 @@ def get_db_connection():
     return conn
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# In-memory message store (temporary)
+chat_messages = {}
+
 
 # Filtering function
 def in_age_range(user_age, range_str):
@@ -45,6 +56,13 @@ def update_water_points(name, points):
     conn.commit()
     conn.close()
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender = db.Column(db.String(50), nullable=False)
+    recipient = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
 
 # Serve HTML
 @app.route('/')
@@ -58,6 +76,42 @@ def connect():
 @app.route('/virtualrooms')
 def virtualrooms():
     return render_template('virtualrooms.html')
+
+@app.route("/")
+def home():
+    return render_template("index.html")  # your main page
+
+# CHAT SYSTEM ROUTES
+
+@app.route("/send_message", methods=["POST"])
+def send_message():
+    data = request.get_json()
+    username = data["username"].lower()  # recipient
+    sender = data["sender"]
+    message = data["message"]
+
+    if username not in chat_messages:
+        chat_messages[username] = []
+
+    chat_messages[username].append({"sender": sender, "message": message})
+    return jsonify({"status": "success"})
+
+
+@app.route("/get_messages/<username>")
+def get_messages(username):
+    username = username.lower()
+    messages = chat_messages.get(username, [])
+    return jsonify(messages)
+
+
+@app.route("/profile/<username>")
+def profile(username):
+    """Profile page for each user with chat feature."""
+    user = next((u for u in users if u["name"].lower() == username.lower()), None)
+    if not user:
+        return "User not found", 404
+    return render_template("profile.html", user=user, username="chihiro")  # logged-in user
+
 
 # Search API
 @app.route('/search', methods=['GET'])
@@ -81,24 +135,18 @@ def update_progress():
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
-    data = request.json
-    conn = get_db_connection()
-    conn.execute("""
-        INSERT OR REPLACE INTO users (name, age, nationality, gender, favorite_subjects, hobbies, bio)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        data["name"],
-        data["age"],
-        data["nationality"],
-        data["gender"],
-        ",".join(data["favorite_subjects"]),
-        ",".join(data["hobbies"]),
-        data["bio"]
-    ))
-    conn.commit()
-    conn.close()
-    return jsonify({"message": "User added!"})
-
+    data = request.get_json()
+    new_user = UserProfile(
+        name=data['name'],
+        age=data['age'],
+        nationality=data['nationality'],
+        gender=data['gender'],
+        favorite_subjects=data['favorite_subjects'],
+        hobbies=data['hobbies'],
+        bio=data['bio']
+    )
+    users.append(new_user)
+    return jsonify({"message": "User added successfully"}), 200
 
 
 @app.route('/room/<username>')
@@ -106,5 +154,7 @@ def room(username):
     """Render a shared study room for the given user."""
     return render_template('room.html', username=username)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    db.create_all()  # creates DB tables if they don't exist
     app.run(debug=True)

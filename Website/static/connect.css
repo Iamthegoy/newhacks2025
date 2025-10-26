@@ -1,0 +1,17 @@
+.container {
+    padding: 140px;
+    display: flex;
+    justify-content: center; 
+    gap: 10px;
+}
+
+#searchBtn {
+    padding: 2px 10px;
+    background-color: #6CB2AC;
+    border: none;
+    border-radius: 20px;
+}
+
+#searchBtn:hover {
+    background: #94d3ce;
+}
