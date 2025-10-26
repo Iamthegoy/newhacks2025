@@ -32,6 +32,14 @@ def filter_users(users, subject=None, hobby=None, nationality=None, gender=None,
 def index():
     return render_template('index.html')
 
+@app.route('/connect')
+def connect():
+    return render_template('connect.html')
+
+@app.route('/virtualrooms')
+def virtualrooms():
+    return render_template('virtualrooms.html')
+
 # Search API
 @app.route('/search', methods=['GET'])
 def search_users():
