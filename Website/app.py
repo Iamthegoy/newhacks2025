@@ -1,5 +1,11 @@
 from flask import Flask, request, jsonify, render_template
 from data import users
+import sqlite3
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 app = Flask(__name__)
 
@@ -27,6 +33,19 @@ def filter_users(users, subject=None, hobby=None, nationality=None, gender=None,
         results.append(user)
     return results
 
+def get_user(name):
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE name = ?", (name,)).fetchone()
+    conn.close()
+    return user
+
+def update_water_points(name, points):
+    conn = get_db_connection()
+    conn.execute("UPDATE users SET water_points = water_points + ? WHERE name = ?", (points, name))
+    conn.commit()
+    conn.close()
+
+
 # Serve HTML
 @app.route('/')
 def index():
@@ -51,6 +70,36 @@ def search_users():
 
     matched = filter_users(users, subject, hobby, nationality, gender, age_range)
     return jsonify([user.__dict__ for user in matched])
+
+@app.route('/update_progress', methods=['POST'])
+def update_progress():
+    data = request.json
+    username = data.get("username")
+    points = int(data.get("points", 0))
+    update_water_points(username, points)
+    return jsonify({"message": "Progress updated!"})
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    data = request.json
+    conn = get_db_connection()
+    conn.execute("""
+        INSERT OR REPLACE INTO users (name, age, nationality, gender, favorite_subjects, hobbies, bio)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        data["name"],
+        data["age"],
+        data["nationality"],
+        data["gender"],
+        ",".join(data["favorite_subjects"]),
+        ",".join(data["hobbies"]),
+        data["bio"]
+    ))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "User added!"})
+
+
 
 @app.route('/room/<username>')
 def room(username):

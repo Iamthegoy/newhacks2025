@@ -36,4 +36,28 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
   }
 });
 
+document.getElementById("addUserForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("newName").value,
+    age: parseInt(document.getElementById("newAge").value),
+    nationality: document.getElementById("newNationality").value,
+    gender: document.getElementById("newGender").value,
+    favorite_subjects: document.getElementById("newSubjects").value.split(","),
+    hobbies: document.getElementById("newHobbies").value.split(","),
+    bio: document.getElementById("newBio").value
+  };
+
+  await fetch("/add_user", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  alert("Profile added successfully!");
+  document.getElementById("addUserForm").reset();
+});
+
+
 
