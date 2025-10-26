@@ -5,36 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
-  <title>FriendLink</title>
+  <title>Create Profile</title>
 </head>
+<body>
+  <h2>Create Your Profile</h2>
+  <form method="POST" action="{{ url_for('create_profile', username=user.username) }}">
+    <label>Bio:</label>
+    <textarea name="bio" rows="2" placeholder="Write a short bio...">{{ user.bio or '' }}</textarea><br>
 
-<h2>Create Your Profile</h2>
-<form id="addUserForm">
-  <label>Name:</label>
-  <input id="newName" required><br>
+    <label>Favorite Subjects (comma-separated):</label>
+    <input name="subjects" placeholder="e.g. AI, Data Science" value="{{ user.subjects or '' }}"><br>
 
-  <label>Age:</label>
-  <input id="newAge" type="number" required><br>
+    <label>Hobbies (comma-separated):</label>
+    <input name="hobbies" placeholder="e.g. Music, Reading" value="{{ user.hobbies or '' }}"><br>
 
-  <label>Nationality:</label>
-  <input id="newNationality" placeholder="e.g. Japan"><br>
-
-  <label>Gender:</label>
-  <select id="newGender">
-    <option value="">Select</option>
-    <option value="female">Female</option>
-    <option value="male">Male</option>
-  </select><br>
-
-  <label>Favorite Subjects (comma-separated):</label>
-  <input id="newSubjects" placeholder="e.g. AI, Data Science"><br>
-
-  <label>Hobbies (comma-separated):</label>
-  <input id="newHobbies" placeholder="e.g. Music, Reading"><br>
-
-  <label>Bio:</label>
-  <textarea id="newBio" rows="2" placeholder="Write a short bio..."></textarea><br>
-
-  <button type="submit">Create Profile</button>
-</form>
+    <button type="submit">Create Profile</button>
+  </form>
+</body>
 </html>
+
