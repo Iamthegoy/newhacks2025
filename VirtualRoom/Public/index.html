@@ -29,12 +29,20 @@
       </a-entity>
 
       <!-- Ground and sky -->
-      <a-plane rotation="-90 0 0" width="30" height="30" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
+      <!-- a-plane rotation="-90 0 0" width="30" height="30" color="#7BC8A4"></a-plane-->
+      <a-sky color="#cee4f5"></a-sky>
 
-      <!-- A simple landmark -->
-      <a-box position="0 1 -3" color="#4CC3D9"></a-box>
-      <a-sphere position="2 1 -5" radius="1" color="#EF2D5E"></a-sphere>
-    </a-scene>
+      <a-entity light="type: ambient; intensity: 0.4"></a-entity>
+      <a-entity light="type: point; intensity: 0.41; color: #fe692a; castShadow: true; angle: 120" position="0.21395 1.41445 -5.83331" rotation="0 180 0"></a-entity>
+
+      <a-assets>
+        <a-asset-item id="room" src="res/room.glb"></a-asset-item>
+      </a-assets>
+      <a-entity gltf-model="#room" position="-3 0 -4" scale="3 3 3"></a-entity>
+
+      <a-assets>
+        <a-asset-item id="chara" src="res/body.glb"></a-asset-item>
+      </a-assets>
+      </a-scene>
   </body>
 </html>

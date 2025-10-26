@@ -28,6 +28,25 @@ socket.on("playerMoved", (data) => updateAvatar(data.id, data));
 socket.on("playerDisconnected", (id) => removeAvatar(id));
 
 // Add a new avatar to the world
+function addAvatar_new(id, pos) {
+  console.log("Adding avatar for", id);
+  const el = document.createElement("a-entity");
+  el.setAttribute("gltf-model", "#chara");
+  el.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
+  el.setAttribute("id", id);
+
+  // Floating username
+  const nameTag = document.createElement("a-text");
+  nameTag.setAttribute("value", id.slice(0, 5));
+  nameTag.setAttribute("color", "black");
+  nameTag.setAttribute("position", "0 1 0");
+  nameTag.setAttribute("rotation", "0 180 0");
+  nameTag.setAttribute("align", "center");
+  el.appendChild(nameTag);
+
+  scene.appendChild(el);
+  players[id] = el;
+}
 function addAvatar(id, pos) {
   console.log("Adding avatar for", id);
   const el = document.createElement("a-box");
