@@ -27,7 +27,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
         <p><b>Subjects:</b> ${user.favorite_subjects.join(", ")}</p>
         <p><b>Hobbies:</b> ${user.hobbies.join(", ")}</p>
         <p>${user.bio}</p>
-        <button onclick="window.location.href='/room/${user.name}'">Join Room</button>
+        <button onclick="window.location.href='/room/${user.name}'">Message</button>
       `;
       resultDiv.appendChild(div);
     });

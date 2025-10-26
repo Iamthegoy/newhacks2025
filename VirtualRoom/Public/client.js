@@ -99,7 +99,7 @@ setInterval(() => {
   // console.log("My position:", pos);
   const rotationY = rot.y * (180 / Math.PI); // Convert to degrees
   socket.emit("move", { x: pos.x, y: pos.y, z: pos.z, rotationY: rotationY });
-}, 100);
+}, 50);
 
 
 
