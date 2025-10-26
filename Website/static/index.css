@@ -5,16 +5,6 @@
     font-family: 'Baloo 2', sans-serif;
 }
 
-.hero-container{ 
-    display: grid;
-    height: 100vh;
-    padding:10rem calc((100vw - 1300px)/2);
-    align-items: center;
-    overflow-x: hidden;
-    position: relative;
-    text-align: center;
-}
-
 body{
     background-image: url('images/star_hands.jpg');
     background-repeat: no-repeat;
@@ -23,6 +13,16 @@ body{
     background-size: cover;
     background-color: rgba(0, 0, 0, 0.25);
     background-blend-mode: multiply;
+}
+
+.hero-container{ 
+    display: grid;
+    height: 100vh;
+    padding:10rem calc((100vw - 1300px)/2);
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    text-align: center;
 }
 
 .text{
@@ -42,6 +42,10 @@ body{
     line-height: 1.5;
 }
 
+.getstarted:hover {
+    background: #FFDAD0;
+}
+
 .getstarted {
     padding: 0.7rem 2.5rem;
     font-size: 22px;
@@ -52,6 +56,3 @@ body{
     border-radius: 50px;
 }
 
-.getstarted:hover {
-    background: #FFDAD0;
-}
