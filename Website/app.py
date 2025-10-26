@@ -63,9 +63,9 @@ def connect():
 def virtualrooms():
     return render_template('virtualrooms.html')
 
-@app.route("/")
-def home():
-    return render_template("index.html")  # your main page
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 
 # Search API
@@ -111,5 +111,4 @@ def room(username):
 
 
 if __name__ == "__main__":
-    db.create_all()  # creates DB tables if they don't exist
     app.run(debug=True)

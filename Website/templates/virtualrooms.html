@@ -8,8 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
   <title>FriendLink</title>
 </head>
-<body>
-  <nav>
+<nav>
     <div class="logo">
         <a href="/"><img src="static/images/friendlink_logo.png" alt="logo" height="135"></a>
     </div>
@@ -22,7 +21,13 @@
         <button type="submit" class="login-btn"><a class="btn-link" href="/signin"><b>LOGIN</b></a></button>
     </div> 
   </nav>
-  <button id="studyRoom"><a href="room/<username>">Go to Study Room 🌱</a></button>
+<body>
+  <div class="forums">
+    <a class="box-link" href="http://localhost:3000"><div class="box">Virtual Space</div></a>
+    <a class="box-link" id="studyRoom" href="room/<username>"><div class="box">Study Room 🌱</div></a>
+    <a class="box-link" href="/"><div class="box">Movie Theatre 🎥</div>
+    <a class="box-link" href="/"><div class="box">Board Game Room</div></a>
+  </div>
 
   <!-- Link JS file -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
