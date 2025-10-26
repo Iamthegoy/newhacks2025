@@ -12,7 +12,7 @@ users = [
     ),
     UserProfile(
         name="Aiko",
-        age=17,
+        age=31,
         nationality="Canada",
         gender="female",
         favorite_subjects=["UI/UX", "Art"],
@@ -21,7 +21,7 @@ users = [
     ),
     UserProfile(
         name="Mateo",
-        age=19,
+        age=55,
         nationality="Spain",
         gender="male",
         favorite_subjects=["Economics", "Statistics"],
@@ -30,7 +30,7 @@ users = [
     ),
     UserProfile(
         name="Sophia",
-        age=18,
+        age=67,
         nationality="USA",
         gender="female",
         favorite_subjects=["Psychology", "Neuroscience"],
@@ -48,7 +48,7 @@ users = [
     ),
     UserProfile(
         name="Ananya",
-        age=19,
+        age=45,
         nationality="India",
         gender="female",
         favorite_subjects=["Mathematics", "Physics"],
@@ -56,9 +56,9 @@ users = [
         bio="I love when logic meets creativity 💃📸"
     ),
     UserProfile(
-        name="Liam",
+        name="Jack",
         age=18,
-        nationality="UK",
+        nationality="Canada",
         gender="male",
         favorite_subjects=["Computer Science", "Philosophy"],
         hobbies=["Chess", "Writing"],
@@ -66,7 +66,7 @@ users = [
     ),
     UserProfile(
         name="Emma",
-        age=17,
+        age=73,
         nationality="Australia",
         gender="female",
         favorite_subjects=["Environmental Science", "Geography"],
@@ -84,7 +84,7 @@ users = [
     ),
     UserProfile(
         name="Noor",
-        age=18,
+        age=59,
         nationality="UAE",
         gender="female",
         favorite_subjects=["Design", "Marketing"],
@@ -92,17 +92,17 @@ users = [
         bio="I love telling stories through colors and style 🌈"
     ),
     UserProfile(
-        name="Yuna",
-        age=19,
-        nationality="Japan",
+        name="Jasmine",
+        age=18,
+        nationality="Canada",
         gender="female",
-        favorite_subjects=["Psychology", "Sociology"],
-        hobbies=["Cafe hopping", "Photography"],
-        bio="People fascinate me — every face tells a story ☕📷"
+        favorite_subjects=["Computer Science", "Music"],
+        hobbies=["Music", "Reading"],
+        bio="Cat lover 🐱"
     ),
     UserProfile(
         name="Ethan",
-        age=20,
+        age=33,
         nationality="USA",
         gender="male",
         favorite_subjects=["Engineering", "Physics"],
@@ -111,7 +111,7 @@ users = [
     ),
     UserProfile(
         name="Sofia",
-        age=18,
+        age=61,
         nationality="Italy",
         gender="female",
         favorite_subjects=["Linguistics", "Art History"],
@@ -129,7 +129,7 @@ users = [
     ),
     UserProfile(
         name="Maya",
-        age=17,
+        age=34,
         nationality="Singapore",
         gender="female",
         favorite_subjects=["Biology", "Chemistry"],

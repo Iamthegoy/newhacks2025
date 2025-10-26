@@ -4,18 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='virtualrooms.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
   <title>FriendLink</title>
 </head>
 <body>
   <nav>
+    <div class="logo">
+        <a href="/"><img src="static/images/friendlink_logo.png" alt="logo" height="135"></a>
+    </div>
     <div class="navbar">
         <a href="/" class="headers">Home</a>
         <a href="/connect" class="headers">Connect</a>
         <a href="/virtualrooms" class="headers">Virtual Rooms</a>
     </div>
     <div class="login">
-        <button type="submit" class="login-btn"><a class="btn-link" href="signin.html"><b>LOGIN</b></a></button>
+        <button type="submit" class="login-btn"><a class="btn-link" href="/signin"><b>LOGIN</b></a></button>
     </div> 
   </nav>
+  <button id="studyRoom"><a href="room/<username>">Go to Study Room 🌱</a></button>
+
+  <!-- Link JS file -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
