@@ -1,5 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from data import users
+import sqlite3
+from models import UserProfile
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 app = Flask(__name__)
 
@@ -27,6 +34,19 @@ def filter_users(users, subject=None, hobby=None, nationality=None, gender=None,
         results.append(user)
     return results
 
+def get_user(name):
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE name = ?", (name,)).fetchone()
+    conn.close()
+    return user
+
+def update_water_points(name, points):
+    conn = get_db_connection()
+    conn.execute("UPDATE users SET water_points = water_points + ? WHERE name = ?", (points, name))
+    conn.commit()
+    conn.close()
+
+
 # Serve HTML
 @app.route('/')
 def index():
@@ -51,6 +71,30 @@ def search_users():
 
     matched = filter_users(users, subject, hobby, nationality, gender, age_range)
     return jsonify([user.__dict__ for user in matched])
+
+@app.route('/update_progress', methods=['POST'])
+def update_progress():
+    data = request.json
+    username = data.get("username")
+    points = int(data.get("points", 0))
+    update_water_points(username, points)
+    return jsonify({"message": "Progress updated!"})
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    data = request.get_json()
+    new_user = UserProfile(
+        name=data['name'],
+        age=data['age'],
+        nationality=data['nationality'],
+        gender=data['gender'],
+        favorite_subjects=data['favorite_subjects'],
+        hobbies=data['hobbies'],
+        bio=data['bio']
+    )
+    users.append(new_user)
+    return jsonify({"message": "User added successfully"}), 200
+
 
 @app.route('/room/<username>')
 def room(username):

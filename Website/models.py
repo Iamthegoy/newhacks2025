@@ -10,4 +10,4 @@ class UserProfile:
     favorite_subjects: List[str]
     hobbies: List[str]
     bio: str
-
+    water_points: int = 0
