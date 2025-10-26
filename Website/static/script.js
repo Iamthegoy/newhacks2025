@@ -13,7 +13,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
     resultDiv.innerHTML = "";
 
     if (users.length === 0) {
-      resultDiv.innerHTML = "<p>No matches found 😢</p>";
+      resultDiv.innerHTML = '<p style="text-align:center;">No matches found 😢</p>';
       return;
     }
 
