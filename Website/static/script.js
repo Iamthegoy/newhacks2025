@@ -40,24 +40,30 @@ document.getElementById("addUserForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {
-    name: document.getElementById("newName").value,
+    name: document.getElementById("newName").value.trim(),
     age: parseInt(document.getElementById("newAge").value),
-    nationality: document.getElementById("newNationality").value,
+    nationality: document.getElementById("newNationality").value.trim(),
     gender: document.getElementById("newGender").value,
-    favorite_subjects: document.getElementById("newSubjects").value.split(","),
-    hobbies: document.getElementById("newHobbies").value.split(","),
-    bio: document.getElementById("newBio").value
+    favorite_subjects: document.getElementById("newSubjects").value.split(",").map(s => s.trim()),
+    hobbies: document.getElementById("newHobbies").value.split(",").map(h => h.trim()),
+    bio: document.getElementById("newBio").value.trim()
   };
 
-  await fetch("/add_user", {
+  const res = await fetch("/add_user", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 
-  alert("Profile added successfully!");
-  document.getElementById("addUserForm").reset();
+  if (res.ok) {
+    localStorage.setItem("username", data.name);  // save user for later use
+    alert("Profile created successfully!");
+    window.location.href = `/room/${data.name}`;  // auto-redirect to their study room
+  } else {
+    alert("Failed to create profile 😢");
+  }
 });
+
 
 
 

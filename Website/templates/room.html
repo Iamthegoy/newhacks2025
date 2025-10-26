@@ -52,7 +52,13 @@
 </head>
 <body>
 
-  <h1>Welcome to the Study Room, {{ username }} 👋</h1>
+<h1 id="welcomeMsg">Welcome to the Study Room 👋</h1>
+
+<script>
+  const name = "{{ username }}" || localStorage.getItem("username");
+  document.getElementById("welcomeMsg").innerText = `Welcome to the Study Room, ${name} 👋`;
+</script>
+
   <p>Work together, learn together, and help your plant grow 🌱</p>
 
   <!-- 🌿 Shared Study Progress Section -->

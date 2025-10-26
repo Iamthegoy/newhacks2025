@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from data import users
 import sqlite3
+from models import UserProfile
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -81,24 +82,18 @@ def update_progress():
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
-    data = request.json
-    conn = get_db_connection()
-    conn.execute("""
-        INSERT OR REPLACE INTO users (name, age, nationality, gender, favorite_subjects, hobbies, bio)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (
-        data["name"],
-        data["age"],
-        data["nationality"],
-        data["gender"],
-        ",".join(data["favorite_subjects"]),
-        ",".join(data["hobbies"]),
-        data["bio"]
-    ))
-    conn.commit()
-    conn.close()
-    return jsonify({"message": "User added!"})
-
+    data = request.get_json()
+    new_user = UserProfile(
+        name=data['name'],
+        age=data['age'],
+        nationality=data['nationality'],
+        gender=data['gender'],
+        favorite_subjects=data['favorite_subjects'],
+        hobbies=data['hobbies'],
+        bio=data['bio']
+    )
+    users.append(new_user)
+    return jsonify({"message": "User added successfully"}), 200
 
 
 @app.route('/room/<username>')
