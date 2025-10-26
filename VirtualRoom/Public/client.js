@@ -43,6 +43,7 @@ function addAvatar(id, pos) {
   nameTag.setAttribute("value", id.slice(0, 5));
   nameTag.setAttribute("color", "black");
   nameTag.setAttribute("position", "0 1 0");
+  nameTag.setAttribute("rotation", "0 180 0");
   nameTag.setAttribute("align", "center");
   el.appendChild(nameTag);
 
@@ -50,12 +51,17 @@ function addAvatar(id, pos) {
   players[id] = el;
 }
 
-// Update avatar position
-function updateAvatar(id, pos) {
-  console.log("Updating avatar for", id);
-  console.log(pos);
+// Update avatar position and rotation
+function updateAvatar(id, data) {
   if (players[id]) {
-    players[id].setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
+    // Update position
+    players[id].setAttribute("position", `${data.x} ${data.y} ${data.z}`);
+    
+    // Update rotation around Y axis
+    if (data.rotationY !== undefined) {
+      console.log("Updating rotation for", id, data.rotationY);
+      players[id].setAttribute("rotation", `0 ${data.rotationY} 0`);
+    }
   }
 }
 
@@ -67,9 +73,76 @@ function removeAvatar(id) {
   }
 }
 
+/*
+// Audio streaming
+// 1. Capture mic
+navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+  const context = new AudioContext();
+  const source = context.createMediaStreamSource(stream);
+  const processor = context.createScriptProcessor(4096, 1, 1);
+
+  source.connect(processor);
+  processor.connect(context.destination);
+
+  processor.onaudioprocess = e => {
+    const input = e.inputBuffer.getChannelData(0);
+    const buffer = new Int16Array(input.length);
+    for (let i = 0; i < input.length; i++) buffer[i] = input[i] * 0x7fff;
+    socket.emit('audio', buffer);
+  };
+});
+
+// 2. Play others’ audio
+socket.on('audio', data => {
+  const context = new AudioContext();
+  console.log("Playing received audio", data);
+  const buffer = context.createBuffer(1, data.byteLength, 44100);
+  const floatArray = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) floatArray[i] = data[i] / 0x7fff;
+  const src = context.createBufferSource();
+  src.buffer = buffer;
+  src.connect(context.destination);
+  src.start();
+});
+*/
+
+// Capture mic and stream audio chunks
+navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+  const context = new AudioContext();
+  const source = context.createMediaStreamSource(stream);
+  const processor = context.createScriptProcessor(4096, 1, 1);
+
+  source.connect(processor);
+  processor.connect(context.destination);
+
+  processor.onaudioprocess = e => {
+    const input = e.inputBuffer.getChannelData(0);
+    const buffer = new Int16Array(input.length);
+    for (let i = 0; i < input.length; i++) buffer[i] = input[i] * 0x7fff;
+
+    socket.emit("audio", buffer.buffer);
+  };
+});
+
+socket.on("audio", arrayBuffer => {
+  const data = new Int16Array(arrayBuffer);
+  const context = new AudioContext();
+  const audioBuffer = context.createBuffer(1, data.length, 44100);
+  const floatArray = audioBuffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) floatArray[i] = data[i] / 0x7fff;
+
+  const src = context.createBufferSource();
+  src.buffer = audioBuffer;
+  src.connect(context.destination);
+  src.start();
+});
+
+
 // Send your position every 100ms
 setInterval(() => {
   const pos = cameraRig.querySelector("a-camera").object3D.position;
-  console.log("My position:", pos);
-  socket.emit("move", { x: pos.x, y: pos.y, z: pos.z });
+  const rot = cameraRig.querySelector("a-camera").object3D.rotation;
+  // console.log("My position:", pos);
+  const rotationY = rot.y * (180 / Math.PI); // Convert to degrees
+  socket.emit("move", { x: pos.x, y: pos.y, z: pos.z, rotationY: rotationY });
 }, 100);

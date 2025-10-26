@@ -40,6 +40,12 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("playerMoved", { id: socket.id, ...data });
   });
 
+
+  // Audio data relay
+  socket.on("audio", data => {
+    socket.broadcast.emit("audio", data);
+  });
+
   // When player disconnects
   socket.on("disconnect", () => {
     console.log("🔴 Player disconnected:", socket.id);
