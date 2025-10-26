@@ -1,25 +1,31 @@
-from flask import Flask, request, jsonify, render_template
-from data import users
-import sqlite3
+from flask import Flask, request, jsonify, render_template, redirect, url_for, make_response
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from data import users  # your sample users list
 from models import UserProfile
 from datetime import datetime
 
-
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SECRET_KEY'] = 'your-secret-key'
+db = SQLAlchemy(app)
 
+# --- Models ---
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    bio = db.Column(db.String(500))
+    subjects = db.Column(db.String(200))
+    hobbies = db.Column(db.String(200))
 
-# Filtering function
+# --- Helper functions ---
 def in_age_range(user_age, range_str):
     if not range_str:
         return True
     low, high = map(int, range_str.split('-'))
     return low <= user_age <= high
-
 
 def filter_users(users, subject=None, hobby=None, nationality=None, gender=None, age_range=None):
     results = []
@@ -37,38 +43,76 @@ def filter_users(users, subject=None, hobby=None, nationality=None, gender=None,
         results.append(user)
     return results
 
-def get_user(name):
-    conn = get_db_connection()
-    user = conn.execute("SELECT * FROM users WHERE name = ?", (name,)).fetchone()
-    conn.close()
-    return user
-
-def update_water_points(name, points):
-    conn = get_db_connection()
-    conn.execute("UPDATE users SET water_points = water_points + ? WHERE name = ?", (points, name))
-    conn.commit()
-    conn.close()
-
-
-# Serve HTML
+# --- Routes ---
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/connect')
 def connect():
-    return render_template('connect.html')
+    return render_template('connect.html', users=users)
 
 @app.route('/virtualrooms')
 def virtualrooms():
     return render_template('virtualrooms.html')
 
-@app.route('/signup')
+# --- Signup & Profile ---
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
-    return render_template('signup.html')
+    if request.method == "POST":
+        name = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        bio = request.form.get('bio', '')
+        subjects = request.form.get('subjects', '')
+        hobbies = request.form.get('hobbies', '')
+
+        # Check if username exists
+        if User.query.filter_by(username=username).first():
+            return "Username already exists"
+
+        # Create new user
+        hashed_pw = generate_password_hash(password)
+        user = User(
+            name=name,
+            username=username,
+            password_hash=hashed_pw,
+            bio=bio,
+            subjects=subjects,
+            hobbies=hobbies
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        # Set cookie and redirect to profile page
+        resp = make_response(redirect(url_for('profile_page', username=username)))
+        resp.set_cookie('username', username)
+        return resp
+
+    return render_template("signup.html")
 
 
-# Search API
+@app.route("/create_profile/<username>", methods=["GET", "POST"])
+def create_profile(username):
+    user = User.query.filter_by(username=username).first()
+    if request.method == "POST":
+        user.bio = request.form['bio']
+        user.subjects = request.form['subjects']  # comma-separated
+        user.hobbies = request.form['hobbies']    # comma-separated
+        db.session.commit()
+        return redirect(url_for('profile_page', username=username))
+
+    return render_template("create_profile.html", user=user)
+
+
+@app.route("/profile/<username>")
+def profile_page(username):
+    user = User.query.filter_by(username=username).first()
+    current_user = request.cookies.get('username')
+    return render_template("profile.html", user=user, username=current_user)
+
+
+# --- Search API ---
 @app.route('/search', methods=['GET'])
 def search_users():
     subject = request.args.get('subject')
@@ -80,14 +124,16 @@ def search_users():
     matched = filter_users(users, subject, hobby, nationality, gender, age_range)
     return jsonify([user.__dict__ for user in matched])
 
+# --- Progress / Water points ---
 @app.route('/update_progress', methods=['POST'])
 def update_progress():
     data = request.json
     username = data.get("username")
     points = int(data.get("points", 0))
-    update_water_points(username, points)
+    # Implement update_water_points(username, points) if needed
     return jsonify({"message": "Progress updated!"})
 
+# --- Add user API ---
 @app.route('/add_user', methods=['POST'])
 def add_user():
     data = request.get_json()
@@ -103,12 +149,13 @@ def add_user():
     users.append(new_user)
     return jsonify({"message": "User added successfully"}), 200
 
-
+# --- Virtual room ---
 @app.route('/room/<username>')
 def room(username):
-    """Render a shared study room for the given user."""
     return render_template('room.html', username=username)
 
-
+# --- Main ---
 if __name__ == "__main__":
+    db.create_all()  # creates DB tables if they don't exist
     app.run(debug=True)
+

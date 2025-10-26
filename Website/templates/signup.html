@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up & Create Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
+<body>
+  <h1>Create Your Account & Profile</h1>
+  <form method="POST">
+    <h2>Account Info</h2>
+    <input name="name" placeholder="Name" required><br>
+    <input name="username" placeholder="Username" required><br>
+    <input name="password" type="password" placeholder="Password" required><br>
+
+    <h2>Profile Info</h2>
+    <input name="bio" placeholder="Bio"><br>
+    <input name="subjects" placeholder="Favorite Subjects (comma-separated)"><br>
+    <input name="hobbies" placeholder="Hobbies (comma-separated)"><br>
+
+    <button type="submit">Sign Up</button>
+  </form>
+</body>
+</html>
